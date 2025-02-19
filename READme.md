@@ -1,11 +1,12 @@
-# Combined Landslide Classification System
+# Landslide Trigger Track
 
-The Combined Landslide Classification System provides three different methodologies to classify landslide events:  
-1. **Image-Based Classification (CNN)**  
-2. **Geometric-Based Classification (XGBoost)**  
-3. **TDA-Based Classification (XGBoost with Topological Data Analysis)**
+The Landslide Trigger Track provides three different methodologies to classify landslide events:  
+1. **TDA-Based Classification (using XGBoost with Topological Data Analysis)**  
+2. **Image-Based Classification (using CNN)**
+3. **Geometric-Based Classification (using XGBoost)**  
 
-This repository includes a complete pipeline—from data preprocessing and feature extraction to machine learning-based prediction—for classifying landslides triggered by earthquakes or rainfall.
+
+This repository includes a complete pipeline—from data preprocessing and feature extraction to machine learning-based prediction—for classifying landslides triggered as earthquakes or rainfall.
 
 ---
 
@@ -43,7 +44,7 @@ This repository includes a complete pipeline—from data preprocessing and featu
 
 ---
 
-## Requirements
+## Key Requirements
 
 - **Python 3.7 or higher**
 
@@ -66,109 +67,111 @@ This repository includes a complete pipeline—from data preprocessing and featu
 
 ---
 
-## Installation
+# HOW TO RUN THIS ??
 
-1. **Clone the Repository:**
+ **Step 1 : Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/landslide-classification.git
+   git clone https://github.com/Snehal-Goyal/Landslide_Trigger_Track.git
    cd landslide-classification
    ```
 
-2. **Create a Virtual Environment (Recommended):**
+**Step 2 : Create a Virtual Environment (Recommended):**
 
    ```bash
    python3 -m venv venv
    source venv/bin/activate  # On Windows use: venv\Scripts\activate
    ```
 
-3. **Install Dependencies:**
+**Step 3 : Install Dependencies:**
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set Up Custom Modules:**
+**Step 4: Set Up Custom Modules:**
 
    Ensure that the custom modules (`Image_model.py`, `Geometric_Model.py`, and `topological_features_based_modell.py`) are in the same directory as the main script or correctly referenced in your `PYTHONPATH`.
 
+**Step 5 : Download Data**
+
+  To run this project , make sure to download data from the link below and place the downloaded folders in the same " Data " folder 
+  Google Drive link : https://drive.google.com/drive/folders/10Pah2Tl9YryNDEwqDL-a0aKwg9oC1i1B?usp=sharing
+
+**Step 6 : Running the Script**
+
+  To run the combined classification system, execute the main Python script:
+
+  ```bash
+  python main.py
+  ```
+Below attached image is the project file structure.
+
+  ![Project File Structure](screenshots/s1.png)
+
 ---
 
-## Usage
-
-### Data Preparation
-
-- **Shapefiles:**  
-  Prepare the shapefile data for your region of interest. Example paths are provided in the script (e.g., for Greece, US landslides, and Japan training datasets). Adjust these paths to point to your local data files.
-
-- **DEM Data:**  
-  The script automatically downloads DEM tiles using the [elevation](https://github.com/Anaconda-Platform/elevation) package. Ensure that your device has sufficient RAM if processing a large region.
-
-### Running the Script
-
-To run the combined classification system, execute the main Python script:
-
-```bash
-python main.py
-```
+### On Terminal
 
 Follow the on-screen prompts to select:
 - The **classification method** (Image-based, Geometric-based, or TDA-based).
-- The **region** for testing (e.g., Greece, US, or Puerto Rico).
+- The **region** for testing (e.g., Greece, US(Puerto Rico)).
 - Additional options such as training a new model (for TDA-based classification) or using a pre-saved model.
 
-### Classification Methods
+## Important Point :
 
-#### 1. Image-Based Classification (CNN)
+When you are running TDA based model for first time , you have to choose "Train new model" , afterwards you can use any of the two options .
 
-- **Workflow:**  
+![Terminal Interface](screenshots/s2.png)
+
+## Workflow
+
+The model is trained on Japaense Landslide inventory .Japanese inventory has in total 26501 landslide polygons where
+16196 are earthquake induced ( 3256 Hokkaido + 4160 Iwata + 8780 Niigata )
+and 10305 are rainfall induced ( 1924 Fukuoka + 5564 Kumamoto +  2817 Osaka)
+
+ ![Japanese inventory](screenshots/japan.png)
+
+and then the model is tested on Greece Landslide inventory that occur on 14-02-2003 around Greece-Albania border region. 
+
+ ![Greece inventory](screenshots/greece.png)
+ 
+ and on US inventory of Sept-2017 at Puerto Rico.
+
+ ![Puerto Rico inventory](screenshots/pr.png)
+
+
+#### 1. Image-Based Classification
+
   - Select region (Greece or US).
   - Load and preprocess shapefile polygons.
-  - Convert polygons to images.
+  - Convert polygons to grey scale images.
   - Classify using a pre-trained CNN.
-  - Visualize sample images and prediction results.
+  - Visualize sample images and classification results.
 
-#### 2. Geometric-Based Classification (XGBoost)
+#### 2. Geometric-Based Classification
 
-- **Workflow:**  
   - Select region.
   - Load shapefiles and extract geometric features.
   - Train or use a pre-trained XGBoost classifier.
-  - Display classification results based on geometric properties.
+  - Display classification results.
 
-#### 3. TDA-Based Classification (XGBoost)
+#### 3. TDA-Based Classification 
 
-- **Workflow:**  
-  - Choose to **train a new model** or use an existing one.
+  - Choose to **train a new model** or use an existing one()to save time.
   - Download DEM data if not already present.
   - Create 3D point clouds from polygon geometries.
   - Extract topological features using TDA.
   - Classify using an XGBoost model.
-  - View probabilities for landslides triggered by earthquake vs. rainfall.
+  - Display classification results.
 
 ---
 
-## Screenshots & Demo Video
+## Results
 
-### Screenshots
+### Comparison of the results obtained from Greece and Puerto Rico
 
-#### Main Menu Prompt
-![Main Menu](screenshots/main_menu.png)
-
-#### Image-Based Classification Results
-![Image Classification](screenshots/image_classification.png)
-
-#### Geometric-Based Classification Results
-![Geometric Classification](screenshots/geometric_classification.png)
-
-#### TDA-Based Classification Workflow
-![TDA Classification](screenshots/s1.png)
-
-### Demo Video
-
-Watch the demo video on how to run and use the system:
-
-[![Watch Demo](screenshots/video_thumbnail.png)](https://www.youtube.com/watch?v=your_demo_video_link)
+![Result](screenshots/result.png)
 
 ---
 

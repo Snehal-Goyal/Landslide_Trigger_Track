@@ -9,6 +9,8 @@ import joblib
 import matplotlib.pyplot as plt
 from osgeo import gdal
 import elevation
+from sklearn.preprocessing import StandardScaler
+from xgboost import XGBClassifier
 
 # -----------------------------
 # IMPORTS FOR IMAGE-BASED CLASSIFICATION
@@ -146,9 +148,6 @@ def train_xgb_model(eq_features, rf_features, model_path, scaler_path, feat_idx_
         
     train_data = np.vstack((train_eq, train_rf))
     train_label = np.vstack((train_label_eq, train_label_rf))
-    
-    from sklearn.preprocessing import StandardScaler
-    from xgboost import XGBClassifier
 
     scaler = StandardScaler()
     train_data_scaled = scaler.fit_transform(train_data)
@@ -210,13 +209,13 @@ def run_image_based_classification():
     
     if choice == "1":
         print("You selected Greece landslides.")
-        shapefile_path = "/home/snehal/Downloads/landsifier_fresh/Final Model/Greece inventory/ground_failure_polygons.shp"
+        shapefile_path = "Data/Greece inventory/ground_failure_polygons.shp"
         ground_failures = read_shapefiles_img(shapefile_path)
         ground_failures = ground_failures[ground_failures['type'] != 'Liquefaction'].dropna(subset=['geometry'])
         test_inventory = ground_failures[ground_failures['epicentral'] == 'Greece'].reset_index(drop=True)
     elif choice == "2":
         print("You selected US (Puerto Rico - Hurricane Maria) landslides.")
-        us_shapefile_path = "/home/snehal/Downloads/landsifier_fresh/Final Model/US_Landslide_v3_shp/us_ls_v3_poly.shp"
+        us_shapefile_path = "Data/US_Landslide_v3_shp/us_ls_v3_poly.shp"
         us_data = read_shapefiles_img(us_shapefile_path)
         test_inventory = us_data[us_data['Inventory'] == 'USGS PR Hurricane Maria (Bessette-Kirton and others, 2019)'].reset_index(drop=True)
     else:
@@ -228,12 +227,12 @@ def run_image_based_classification():
     visualize_images(test_inventory_features, num_images=5)
     
     # Load Japan training datasets (earthquake & rainfall) and extract images
-    earth_hokkaido_shp = read_shapefiles_img("/home/snehal/Downloads/landsifier_fresh/Final Model/Japan Inventory/Earthquake_hokkaido_polygons.shp")
-    earth_iwata_shp = read_shapefiles_img("/home/snehal/Downloads/landsifier_fresh/Final Model/Japan Inventory/Earthquake_iwata_polygons.shp")
-    earth_niigata_shp = read_shapefiles_img("/home/snehal/Downloads/landsifier_fresh/Final Model/Japan Inventory/Earthquake_niigata_polygons.shp")
-    rain_kumamoto_shp = read_shapefiles_img("/home/snehal/Downloads/landsifier_fresh/Final Model/Japan Inventory/Rainfall_kumamoto_polygons.shp")
-    rain_fukuoka_shp = read_shapefiles_img("/home/snehal/Downloads/landsifier_fresh/Final Model/Japan Inventory/Rainfall_fukuoka_polygons.shp")
-    rain_saka_shp = read_shapefiles_img("/home/snehal/Downloads/landsifier_fresh/Final Model/Japan Inventory/Rainfall_saka_polygons.shp")
+    earth_hokkaido_shp = read_shapefiles_img("Data/Japan Inventory/Earthquake_hokkaido_polygons.shp")
+    earth_iwata_shp = read_shapefiles_img("Data/Japan Inventory/Earthquake_iwata_polygons.shp")
+    earth_niigata_shp = read_shapefiles_img("Data/Japan Inventory/Earthquake_niigata_polygons.shp")
+    rain_kumamoto_shp = read_shapefiles_img("Data/Japan Inventory/Rainfall_kumamoto_polygons.shp")
+    rain_fukuoka_shp = read_shapefiles_img("Data/Japan Inventory/Rainfall_fukuoka_polygons.shp")
+    rain_saka_shp = read_shapefiles_img("Data/Japan Inventory/Rainfall_saka_polygons.shp")
     
     features_earth_hokkaido = make_ls_images(earth_hokkaido_shp)
     features_earth_iwata = make_ls_images(earth_iwata_shp)
@@ -266,13 +265,13 @@ def run_geometric_based_classification():
     
     if choice == "1":
         print("You selected Greece landslides.")
-        shapefile_path = "/home/snehal/Downloads/landsifier_fresh/Final Model/Greece inventory/ground_failure_polygons.shp"
+        shapefile_path = "Data/Greece inventory/ground_failure_polygons.shp"
         ground_failures = read_shapefiles_geo(shapefile_path)
         ground_failures = ground_failures[ground_failures['type'] != 'Liquefaction'].dropna(subset=['geometry'])
         test_inventory = ground_failures[ground_failures['epicentral'] == 'Greece'].reset_index(drop=True)
     elif choice == "2":
         print("You selected US (Puerto Rico - Hurricane Maria) landslides.")
-        us_shapefile_path = "/Users/deepaksingh/Documents/vscode/snehal/US_Landslide_v3_shp/us_ls_v3_poly.shp"
+        us_shapefile_path = "Data/US_Landslide_v3_shp/us_ls_v3_poly.shp"
         us_data = read_shapefiles_geo(us_shapefile_path)
         test_inventory = us_data[us_data['Inventory'] == 'USGS PR Hurricane Maria (Bessette-Kirton and others, 2019)'].reset_index(drop=True)
     else:
@@ -283,12 +282,12 @@ def run_geometric_based_classification():
     test_inventory_features = get_geometric_properties_landslide(test_inventory)
     
     # Load Japan training datasets and extract geometric features
-    earth_hokkaido_shp = read_shapefiles_geo("/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Earthquake_hokkaido_polygons.shp")
-    earth_iwata_shp = read_shapefiles_geo("/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Earthquake_iwata_polygons.shp")
-    earth_niigata_shp = read_shapefiles_geo("/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Earthquake_niigata_polygons.shp")
-    rain_kumamoto_shp = read_shapefiles_geo("/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Rainfall_kumamoto_polygons.shp")
-    rain_fukuoka_shp = read_shapefiles_geo("/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Rainfall_fukuoka_polygons.shp")
-    rain_saka_shp = read_shapefiles_geo("/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Rainfall_saka_polygons.shp")
+    earth_hokkaido_shp = read_shapefiles_geo("Data/Japan Inventory/Earthquake_hokkaido_polygons.shp")
+    earth_iwata_shp = read_shapefiles_geo("Data/Japan Inventory/Earthquake_iwata_polygons.shp")
+    earth_niigata_shp = read_shapefiles_geo("Data/Japan Inventory/Earthquake_niigata_polygons.shp")
+    rain_kumamoto_shp = read_shapefiles_geo("Data/Japan Inventory/Rainfall_kumamoto_polygons.shp")
+    rain_fukuoka_shp = read_shapefiles_geo("Data/Japan Inventory/Rainfall_fukuoka_polygons.shp")
+    rain_saka_shp = read_shapefiles_geo("Data/Japan Inventory/Rainfall_saka_polygons.shp")
     
     features_earth_hokkaido = get_geometric_properties_landslide(earth_hokkaido_shp)
     features_earth_iwata = get_geometric_properties_landslide(earth_iwata_shp)
@@ -312,14 +311,14 @@ def run_geometric_based_classification():
 # --------------------------------------------------
 # Function: TDA-Based Classification Workflow
 # --------------------------------------------------
-def run_tda_based_classification():
+def run_tda_based_classification(): 
     print("You selected TDA-Based Classification")
     print("Select mode:")
     print("1. Train new model")
     print("2. Use pre-saved model for testing")
     mode = input("Enter 1 or 2: ").strip()
     
-    model_path = "xgb_model.pkl"
+    model_path = "xgb_model.pkl" 
     scaler_path = "scaler.pkl"
     feat_idx_path = "feature_indices.pkl"
     
@@ -330,14 +329,14 @@ def run_tda_based_classification():
     
     if region_choice == "1":
         print("You selected Greece landslides.")
-        shapefile_path = "/Users/deepaksingh/Documents/vscode/snehal/greece/ground_failure_polygons.shp"
+        shapefile_path = "Data/Greece inventory/ground_failure_polygons.shp" 
         ground_failures = read_shapefiles_tda(shapefile_path)
         ground_failures = ground_failures[ground_failures['type'] != 'Liquefaction'].dropna(subset=['geometry'])
         test_inventory = ground_failures[ground_failures['epicentral'] == 'Greece'].reset_index(drop=True)
         inventory_name = "testt_region.tif"
     elif region_choice == "2":
         print("You selected Puerto Rico landslides.")
-        shapefile_path = "/Users/deepaksingh/Documents/vscode/snehal/US_Landslide_v3_shp/us_ls_v3_poly.shp"
+        shapefile_path = "Data/US_Landslide_v3_shp/us_ls_v3_poly.shp"
         test_inventoryy = read_shapefiles_tda(shapefile_path)
         test_inventoryyy = test_inventoryy[test_inventoryy['Inventory'] == 'USGS PR Hurricane Maria (Bessette-Kirton and others, 2019)']
         test_inventory = test_inventoryyy.reset_index(drop=True)
@@ -354,10 +353,15 @@ def run_tda_based_classification():
     plot_polygon(test_inventory, polygon_index=0)
     
     # Set up DEM and point cloud file paths
-    dem_location = "/Users/deepaksingh/Documents/vscode/snehal/dem"
+    dem_location = "dem"
     if not os.path.exists(dem_location):
         os.makedirs(dem_location)
-    
+
+  
+
+
+
+
     npz_pointcloud_file = f"pointcloud_test_region_{region_choice}.npz"
     features_excel = "features_test_region.xlsx"
     features_csv = "features_test_region.csv"
@@ -381,12 +385,12 @@ def run_tda_based_classification():
     if mode == "1":
         print("\nTraining new model using Japan training datasets...")
         japan_shapefiles = {
-            "earthquake_hokkaido": "/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Earthquake_hokkaido_polygons.shp",
-            "earthquake_iwata": "/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Earthquake_iwata_polygons.shp",
-            "earthquake_niigata": "/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Earthquake_niigata_polygons.shp",
-            "rainfall_kumamoto": "/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Rainfall_kumamoto_polygons.shp",
-            "rainfall_fukuoka": "/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Rainfall_fukuoka_polygons.shp",
-            "rainfall_saka": "/Users/deepaksingh/Documents/vscode/snehal/Japan Inventory/Rainfall_saka_polygons.shp",
+            "earthquake_hokkaido": "Data/Japan Inventory/Earthquake_hokkaido_polygons.shp",
+            "earthquake_iwata": "Data/Japan Inventory/Earthquake_iwata_polygons.shp",
+            "earthquake_niigata": "Data/Japan Inventory/Earthquake_niigata_polygons.shp",
+            "rainfall_kumamoto": "Data/Japan Inventory/Rainfall_kumamoto_polygons.shp",
+            "rainfall_fukuoka": "Data/Japan Inventory/Rainfall_fukuoka_polygons.shp",
+            "rainfall_saka": "Data/Japan Inventory/Rainfall_saka_polygons.shp",
         }
     
         japan_inventory_names = {
