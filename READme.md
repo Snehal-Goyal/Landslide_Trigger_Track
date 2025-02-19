@@ -1,9 +1,9 @@
 # Landslide Trigger Track
 
 The Landslide Trigger Track provides three different methodologies to classify landslide events:  
-1. **TDA-Based Classification (using XGBoost with Topological Data Analysis)**  
-2. **Image-Based Classification (using CNN)**
-3. **Geometric-Based Classification (using XGBoost)**  
+1. **TDA-Based Classification**  
+2. **Image-Based Classification**
+3. **Geometric-Based Classification**  
 
 
 This repository includes a complete pipeline—from data preprocessing and feature extraction to machine learning-based prediction—for classifying landslides triggered as earthquakes or rainfall.
@@ -13,13 +13,12 @@ This repository includes a complete pipeline—from data preprocessing and featu
 ## Table of Contents
 
 - [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Data Preparation](#data-preparation)
-  - [Running the Script](#running-the-script)
-  - [Classification Methods](#classification-methods)
-- [Screenshots & Demo Video](#screenshots--demo-video)
+- [Key_Requirements](#Key_requirements)
+- [How_to_run_this](#How_to_run_this)
+- [On Terminal](#On_Terminal)
+- [Important_point](#Important_Point)
+- [Workflow](#workflow)
+- [Results](#Results)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -200,4 +199,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions or support, please contact:
 
 - **Snehal** – [snehal@flaxandteal.co.uk](mailto:snehal@flaxandteal.co.uk)
-- **Project Link:** [https://github.com/yourusername/landslide-classification](https://github.com/yourusername/landslide-classification)
+
